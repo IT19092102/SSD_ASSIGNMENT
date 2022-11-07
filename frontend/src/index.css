@@ -1,3 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+
 * {
   padding: 0;
   box-sizing: border-box;
@@ -17,7 +25,7 @@ code {
   max-width: 1930px;
   min-height: 120vh;
   margin: 0 auto;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   box-shadow: 0 0 35px #eee;
 }
 a{
@@ -44,6 +52,7 @@ button{
 
 /* ------------ Cart ------------------- */
 
+@import url("./components/mainpages/messages/message.css");
 
 
 

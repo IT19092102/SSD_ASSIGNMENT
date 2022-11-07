@@ -23,12 +23,14 @@ const userSchema = new mongoose.Schema({
                 default:0,
             
             },
-
-            cart:{
-                type:Array,
-                default:[],
+            userRole:{
+                type:String,
+                required:true,
+                trim:true
             
-            }
+            },
+
+        
   },{        
     timestamps:true
         

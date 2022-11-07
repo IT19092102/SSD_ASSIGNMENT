@@ -44,15 +44,16 @@ mongoose.connect(uri, {
 
   
 // Routes
-app.use('/test', (req, res) => res.send('You Failed to log in!') )
+
 app.use('/user', require('./routes/userRouter'))
-app.use('/api', require('./routes/categoryRouter'))
-app.use('/api', require('./routes/upload'))
-app.use('/api', require('./routes/productRouter'))
-//app.use('/api', require('./routes/paymentRouter'))
+
+app.use('/message', require('./routes/messageRouter'))
+
+app.use('/file', require('./routes/fileRouter'))
+
 
 
  
 app.listen(port, () => {
-    console.log(`Server is running  on : ${port}`);
+    console.log(`Server is running  o : ${port}`);
 });

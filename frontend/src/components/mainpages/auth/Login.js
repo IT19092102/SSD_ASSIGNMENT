@@ -7,6 +7,8 @@ function Login() {
         email:'', password: ''
     })
 
+    const [name, setName] = useState("ahmed ameer")
+
     const onChangeInput = e =>{
         const {name, value} = e.target;
         setUser({...user, [name]:value})
@@ -18,9 +20,11 @@ function Login() {
             await axios.post('http://localhost:5000/user/login', {...user})
 
             localStorage.setItem('firstLogin', true)
-
+            localStorage.setItem("name", "ahmed")
            
-            window.location.href = "/register";
+            const name = localStorage.getItem("name123")
+            setName("nnnnnnnnn");
+            window.location.href = "/userMessage";
             
         } catch (err) {
             alert(err.response.data.msg)
@@ -31,6 +35,8 @@ function Login() {
         <div className="login-page">
 
         <h1>hiiiiiiiiiiiiiiii</h1>
+        
+        <p>name....{name}</p>
 
             <form onSubmit={loginSubmit}>
                 <h2>Login</h2>

@@ -1,0 +1,14 @@
+
+
+   [
+        {
+            "id": 1,
+            "email": "test product email",
+            "productid": "73827duf"    
+        },
+        {
+            "id": 2,
+            "email": "test product2",
+            "productid": "734437dde"    
+        }
+    ]

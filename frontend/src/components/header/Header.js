@@ -52,23 +52,24 @@ function Header() {
 
             <div className="logo">
                 <h1 >
-                    <Link to="/">{isAdmin ? 'Admin' : 'SSD'}</Link>
+                    <Link to="/">{isAdmin ? 'Admin' : 'LOGO'}</Link>
                 </h1>
             </div>
 
             <ul style={styleMenu}>
 
            
-                <li><b><Link to="/">{isAdmin ? 'Products' : 'Shop'}</Link></b></li>
+                <li><b><Link to="/users">Users</Link></b></li>
 
                 {isAdmin && adminRouter()}
 
-                {
-                    isLogged ? loggedRouter() : <li><Link to="/login"><b>Login  </b></Link></li>
-                }
+             
+                <li><Link to="/userMessage"><b>messages  </b></Link></li>
+               
 
-               {     isLogged ? '' : <li><Link to="/register"> <b> Register</b></Link></li>
-                }
+                  <li><Link to="/userFiles"> <b> files</b></Link></li>
+                  <li><Link to="/login"><b>Login  </b></Link></li>
+               
 
                 <li onClick={() => setMenu(!menu)}>
                     <img src={Close} alt="" width="30" className="menu" />

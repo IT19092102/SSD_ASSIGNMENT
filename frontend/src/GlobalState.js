@@ -13,11 +13,15 @@ export const DataProvider = ({children}) =>{
 
 
     useEffect(() =>{
+
+        console.log("firstLogin ......................... in global state")
         const firstLogin = localStorage.getItem('firstLogin')
+        console.log("firstLogin "+firstLogin)
         if(firstLogin){
             const refreshToken = async () =>{
-                const res = await axios.get('/user/refresh_token')
-        
+                const res = await axios.get('http://localhost:5000/user/refresh_token')
+                console.log("inside refresh token api ")
+                console.log(res.data.accesstoken)
                 setToken(res.data.accesstoken)
     
                 setTimeout(() => {
@@ -27,7 +31,7 @@ export const DataProvider = ({children}) =>{
             refreshToken()
         }
     },[])
-
+    console.log("firstLogin ......................... in global state")
 
     
     const state = {
