@@ -96,10 +96,22 @@ const userCtrl = {
     },
     refreshToken: (req, res) => {
         try {
-            console.log("insideeeeee refresh token ....222222.")
+      
+            console.log("token header before split  333-- "+req.headers.authorization)
+            // const token = req.headers.Authorization.split(" ")[1];
+      
+            const rf_token=req.headers.authorization;
 
-            const rf_token = req.cookies.refreshtoken;
-            console.log("refresh token =  " + req.cookies.refreshtoken)
+
+            // if(req.headers.authorization){
+            //     rf_token=req.headers.authorization;
+            // }else{
+            //       rf_token = req.cookies.refreshtoken;
+            // }
+
+           
+        
+            console.log("refresh token =  " + rf_token)
 
             if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" })
 

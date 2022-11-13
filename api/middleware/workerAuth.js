@@ -3,7 +3,9 @@ const Users = require('../models/userModel')
 
 const workerAuth = async (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(" ")[1];
+        // for postman
+        // const token = req.headers.authorization.split(" ")[1];
+        const token = req.headers.authorization;
         console.log("token --")
         console.log(token)
         if (!token) return res.status(400).json({ msg: "Invalid Authentication" })
@@ -19,6 +21,9 @@ const workerAuth = async (req, res, next) => {
         })
 
         if (userDetails.userRole == "admin") {
+            console.log("user role :" + userDetails.userRole)
+            next()
+        } else if (userDetails.userRole == "worker") {
             console.log("user role :" + userDetails.userRole)
             next()
         } else {

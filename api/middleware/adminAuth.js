@@ -5,8 +5,9 @@ const adminAuth = async (req, res, next) => {
     try {
         if (!req.headers.authorization) return res.status(400).json({ msg: "No token received" })
 
-        const token = req.headers.authorization.split(" ")[1];
-
+        // for postman
+        // const token = req.headers.authorization.split(" ")[1];
+        const token = req.headers.authorization;
         console.log("token --")
         console.log(token)
         if (!token) return res.status(400).json({ msg: "Invalid Authentication" })

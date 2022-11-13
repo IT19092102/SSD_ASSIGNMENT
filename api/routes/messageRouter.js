@@ -1,11 +1,11 @@
 const router = require('express').Router()
 const messageCtrl = require('../controllers/messageController')
-const auth = require('../middleware/auth')
+const workerAuth = require('../middleware/workerAuth')
 
-router.post('/createMessage', messageCtrl.createMessage);
+router.post('/createMessage',workerAuth, messageCtrl.createMessage);
 
 
-router.get('/allMessage',  messageCtrl.getAllMessage)
+router.get('/allMessage',workerAuth,  messageCtrl.getAllMessage)
 
 
 
