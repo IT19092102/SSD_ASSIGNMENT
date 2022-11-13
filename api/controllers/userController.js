@@ -15,10 +15,10 @@ const userCtrl = {
 
 
 
-            const { name, email,userRole, password } = req.body;
+            const { name, email, userRole, password } = req.body;
 
 
-            
+
 
             const user = await Users.findOne({ email })
             if (user) return res.status(400).json({ msg: "The email already exists." })
@@ -29,7 +29,7 @@ const userCtrl = {
             // Password Encryption
             const passwordHash = await bcrypt.hash(password, 10)
             const newUser = new Users({
-                name, email,userRole, password: passwordHash
+                name, email, userRole, password: passwordHash
             })
 
             // Save mongodb
@@ -58,12 +58,22 @@ const userCtrl = {
             const user = await Users.findOne({ email })
             if (!user) return res.status(400).json({ msg: "User does not exist." })
 
+            const userRole = user.userRole
+            console.log("userRole : "+userRole)
             const isMatch = await bcrypt.compare(password, user.password)
             if (!isMatch) return res.status(400).json({ msg: "Incorrect password." })
+
 
             // If login success , create access token and refresh token
             const accesstoken = createAccessToken({ id: user._id })
             const refreshtoken = createRefreshToken({ id: user._id })
+
+            Cookies.set('refreshTokenTest', refreshtoken)
+            // localStorage.setItem('refreshTokenTest', refreshtoken)
+          
+            const rf_token = req.cookies.refreshtoken;
+            console.log("rf_token " + rf_token)
+            console.log("refresh token " + req.cookies.refreshtoken)
 
             res.cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
@@ -71,7 +81,7 @@ const userCtrl = {
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7d
             })
 
-            res.json({ accesstoken })
+            res.json({ accesstoken ,refreshtoken,rf_token,userRole})
 
         } catch (err) {
             return res.status(500).json({ msg: err.message })
@@ -79,6 +89,7 @@ const userCtrl = {
     },
     logout: async (req, res) => {
         try {
+            console.log("logout page")
             res.clearCookie('refreshtoken', { path: '/user/refresh_token' })
             return res.json({ msg: "Logged out" })
         } catch (err) {
@@ -87,10 +98,10 @@ const userCtrl = {
     },
     refreshToken: (req, res) => {
         try {
-console.log("insideeeeee refresh token ....222222.")
+            console.log("insideeeeee refresh token ....222222.")
 
             const rf_token = req.cookies.refreshtoken;
-console.log("refresh token "+req.cookies.refreshtoken)
+            console.log("refresh token " + req.cookies.refreshtoken)
 
             if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" })
 
@@ -116,7 +127,7 @@ console.log("refresh token "+req.cookies.refreshtoken)
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
-    },     getAllUser: async (req, res) => {
+    }, getAllUser: async (req, res) => {
         try {
             const user = await Users.find()
             if (!user) return res.status(400).json({ msg: "User does not exist." })
@@ -126,7 +137,7 @@ console.log("refresh token "+req.cookies.refreshtoken)
             return res.status(500).json({ msg: err.message })
         }
     }
-    
+
 
 }
 
