@@ -7,8 +7,6 @@ const Cookies = require('js-cookie')
 // import Cookies from  'js-cookie';
 
 
-
-
 const userCtrl = {
     register: async (req, res) => {
         try {
@@ -68,7 +66,7 @@ const userCtrl = {
             const accesstoken = createAccessToken({ id: user._id })
             const refreshtoken = createRefreshToken({ id: user._id })
 
-            Cookies.set('refreshTokenTest', refreshtoken)
+            Cookies.set('refreshToken', refreshtoken)
             // localStorage.setItem('refreshTokenTest', refreshtoken)
           
             const rf_token = req.cookies.refreshtoken;
@@ -89,7 +87,7 @@ const userCtrl = {
     },
     logout: async (req, res) => {
         try {
-            console.log("logout page")
+            console.log("logout")
             res.clearCookie('refreshtoken', { path: '/user/refresh_token' })
             return res.json({ msg: "Logged out" })
         } catch (err) {
@@ -101,7 +99,7 @@ const userCtrl = {
             console.log("insideeeeee refresh token ....222222.")
 
             const rf_token = req.cookies.refreshtoken;
-            console.log("refresh token " + req.cookies.refreshtoken)
+            console.log("refresh token =  " + req.cookies.refreshtoken)
 
             if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" })
 

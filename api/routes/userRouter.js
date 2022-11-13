@@ -1,7 +1,11 @@
 const router = require('express').Router()
 const userCtrl = require('../controllers/userController')
 const auth = require('../middleware/auth')
-const authAdmin = require('../middleware/authAdmin')
+const adminAuth = require('../middleware/adminAuth')
+
+
+
+
 router.post('/register', userCtrl.register);
 
 router.post('/login', userCtrl.login);
@@ -13,9 +17,13 @@ router.get('/logout', userCtrl.logout);
  router.get('/infor', auth,  userCtrl.getUser)
 
  router.get('/allUsers',   userCtrl.getAllUser)
-
  
- router.get('/authentication', auth,  userCtrl.getAllUser)
+
+//admin auth routes 
+
+ router.post('/register-au', adminAuth, userCtrl.register);
+
+ router.get('/authentication', adminAuth,  userCtrl.getAllUser)
  
 
 module.exports = router
