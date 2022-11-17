@@ -4,9 +4,17 @@
     border: 2px solid #202047;
     border-radius: 5px;
     padding: 30px;
-    margin: 50px auto;
+    
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 220px;
+    margin-bottom: 100px;
+
 }
 
+.margin-top-form{
+    margin-top: 107px !important;
+}
 
 
 .login-page h2{

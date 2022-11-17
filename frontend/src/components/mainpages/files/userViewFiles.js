@@ -1,9 +1,10 @@
 
 import React, { createContext, useState, useEffect } from 'react'
-
+import Header from '../../header/Header'
 import axios from 'axios'
-const firstLogin = localStorage.getItem('firstLogin')
+import GlobalUrl from '../../../config'
 
+import Cookies from 'js-cookie';
 
 
 
@@ -15,7 +16,11 @@ function UserViewFiles() {
   useEffect(() => {
 
     const getMessageData = async () => {
-      const res = await axios.get('http://localhost:5000/file/allFile')
+
+      let accessToken = Cookies.get('accessToken')
+      const res = await axios.get(`${GlobalUrl}file/allFile`, {
+        headers: { Authorization: accessToken }
+    })
       setMessageData(res.data)
     }
 
@@ -26,42 +31,51 @@ function UserViewFiles() {
 
 
   const [user, setUser] = useState({
-    fileName:'', email:''
-})
+    fileName: '', email: ''
+  })
 
-  const onChangeInput = e =>{
-    const {name, value} = e.target;
-    setUser({...user, [name]:value})
-}
+  const onChangeInput = e => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value })
+  }
 
-const messageSubmit = async e =>{
+  const messageSubmit = async e => {
     e.preventDefault()
     try {
-        await axios.post('http://localhost:5000/file/createFile', {...user})    
-        window.location.href = "/userFiles";
+
+      let accessToken = Cookies.get('accessToken')
+      let email = Cookies.get('email')
+      user.email=email
+      await axios.post(`${GlobalUrl}file/createFile`, { ...user }, {
+        headers: { Authorization: accessToken }
+    })
+
+
+     
+      window.location.href = "/userFiles";
     } catch (err) {
-        alert(err.response.data.msg)
+      alert(err.response.data.msg)
     }
-}
+  }
 
   return (
     <>
-       <div className="login-page"  style={{  height: 400}} >
-            <form onSubmit={messageSubmit}>
-                <h2 className='form-heading'>Add Files</h2>
-                <input type="text" name="fileName" required
-                placeholder="fileName" value={user.fileName} onChange={onChangeInput} />
+      <Header />
+      <div className="login-page margin-top-form" style={{ height: 300 }} >
+        <form onSubmit={messageSubmit}>
+          <h2 className='form-heading'>Add Files</h2>
+          <input type="text" name="fileName" required
+            placeholder="fileName" value={user.fileName} onChange={onChangeInput} />
 
-                <input type="email" name="email" required
-                placeholder="Email" value={user.email} onChange={onChangeInput} />
-             
+      
 
-                <div className="row">
-                    <button type="submit">Add Files</button>
-                    
-                </div>
-            </form>
-        </div>
+
+          <div className="row">
+            <button type="submit">Add Files</button>
+
+          </div>
+        </form>
+      </div>
 
 
 

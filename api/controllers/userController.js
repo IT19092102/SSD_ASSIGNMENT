@@ -32,7 +32,7 @@ const userCtrl = {
 
             // Save mongodb
             await newUser.save()
-
+            newUser.password = "Ha ha haaaa, I wont tell you! :-) "
             // Then create jsonwebtoken to authentication
             const accesstoken = createAccessToken({ id: newUser._id })
             const refreshtoken = createRefreshToken({ id: newUser._id })
@@ -43,7 +43,7 @@ const userCtrl = {
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7d
             })
 
-            res.json({ accesstoken })
+            res.json({ newUser })
 
         } catch (err) {
             return res.status(500).json({ msg: err.message })
@@ -53,11 +53,12 @@ const userCtrl = {
         try {
             const { email, password } = req.body;
 
+
             const user = await Users.findOne({ email })
             if (!user) return res.status(400).json({ msg: "User does not exist." })
 
             const userRole = user.userRole
-            console.log("userRole : "+userRole)
+            console.log("userRole : " + userRole)
             const isMatch = await bcrypt.compare(password, user.password)
             if (!isMatch) return res.status(400).json({ msg: "Incorrect password." })
 
@@ -68,7 +69,7 @@ const userCtrl = {
 
             Cookies.set('refreshToken', refreshtoken)
             // localStorage.setItem('refreshTokenTest', refreshtoken)
-          
+
             const rf_token = req.cookies.refreshtoken;
             console.log("rf_token " + rf_token)
             console.log("refresh token " + req.cookies.refreshtoken)
@@ -79,7 +80,7 @@ const userCtrl = {
                 maxAge: 7 * 24 * 60 * 60 * 1000 // 7d
             })
 
-            res.json({ accesstoken ,refreshtoken,rf_token,userRole})
+            res.json({ accesstoken, refreshtoken, rf_token, userRole, email })
 
         } catch (err) {
             return res.status(500).json({ msg: err.message })
@@ -96,21 +97,16 @@ const userCtrl = {
     },
     refreshToken: (req, res) => {
         try {
-      
-            console.log("token header before split  333-- "+req.headers.authorization)
+            console.log("token header before split  11111111-- ")
+            console.log("token header before split  333-- " + req.headers.authorization)
             // const token = req.headers.Authorization.split(" ")[1];
-      
-            const rf_token=req.headers.authorization;
+
+            const rf_token = req.headers.authorization;
 
 
-            // if(req.headers.authorization){
-            //     rf_token=req.headers.authorization;
-            // }else{
-            //       rf_token = req.cookies.refreshtoken;
-            // }
 
-           
-        
+
+
             console.log("refresh token =  " + rf_token)
 
             if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" })

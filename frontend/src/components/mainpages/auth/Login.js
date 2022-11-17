@@ -1,31 +1,36 @@
-import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
+import Cookies from 'js-cookie';
 
 function Login() {
     const [user, setUser] = useState({
-        email:'', password: ''
+        email: '', password: ''
     })
 
-    const [name, setName] = useState("ahmed ameer")
+    const [name, setName] = useState("")
 
-    const onChangeInput = e =>{
-        const {name, value} = e.target;
-        setUser({...user, [name]:value})
+    const onChangeInput = e => {
+        const { name, value } = e.target;
+        setUser({ ...user, [name]: value })
     }
 
-    const loginSubmit = async e =>{
+    const loginSubmit = async e => {
         e.preventDefault()
         try {
-            await axios.post('http://localhost:5000/user/login', {...user})
+            const res = await axios.post('http://localhost:5000/user/login', { ...user })
+            Cookies.set('refreshToken', res.data.refreshtoken)
+            Cookies.set('accessToken', res.data.accesstoken)
+            Cookies.set('email', res.data.email)
 
             localStorage.setItem('firstLogin', true)
-            localStorage.setItem("name", "ahmed")
-           
-            const name = localStorage.getItem("name123")
-            setName("nnnnnnnnn");
+            localStorage.setItem('refreshtoken', res.data.refreshtoken)
+            localStorage.setItem('userRole', res.data.userRole)
+
+            // alert(res.data.msg)
+
             window.location.href = "/userMessage";
-            
+
         } catch (err) {
             alert(err.response.data.msg)
         }
@@ -34,21 +39,19 @@ function Login() {
     return (
         <div className="login-page">
 
-        <h1>hiiiiiiiiiiiiiiii</h1>
-        
-        <p>name....{name}</p>
+
 
             <form onSubmit={loginSubmit}>
                 <h2>Login</h2>
                 <input type="email" name="email" required
-                placeholder="Email" value={user.email} onChange={onChangeInput} />
+                    placeholder="Email" value={user.email} onChange={onChangeInput} />
 
                 <input type="password" name="password" required autoComplete="on"
-                placeholder="Password" value={user.password} onChange={onChangeInput} />
+                    placeholder="Password" value={user.password} onChange={onChangeInput} />
 
                 <div className="row">
                     <button type="submit">Login</button>
-                    <Link to="/register">Register</Link>
+
                 </div>
             </form>
         </div>
